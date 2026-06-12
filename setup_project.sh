@@ -5,5 +5,26 @@ mkdir -p attendance_tracker_$input/Helpers
 mkdir -p attendance_tracker_$input/reports
 touch attendance_tracker_$input/attendance_checker.py
 touch attendance_tracker_$input/Helpers/assets.csv
-touch attendance_tracker_$input/Helpers/config.json
+cat > attendance_tracker_$input/Helpers/config.json << 'EOF'
+{
+    "thresholds": {
+        "warning": 75,
+        "failure": 50
+    },
+    "run_mode": "live",
+    "total_sessions": 15
+}
+EOF
 touch attendance_tracker_$input/reports/reports.log
+read -p "Enter new Warning threshold (default 75): " warning
+read -p "Enter new failure threshold (default 50): " failure
+if [[ "$warning" =~ ^[0-9]+$ ]]; then
+sed -i "s/\"warning\": 75/\"warning\": $warning/" attendance_tracker_$input/Helpers/config.json
+else
+	echo "Warning value is not a number. Keeping default (75)."
+fi
+if [[ "$failure" =~ ^[0-9]+$ ]]; then
+sed -i "s/\"failure\": 50/\"failure\": $failure/" attendance_tracker_$input/Helpers/config.json
+else
+	echo "Failure value is not a number. Keeping default (50)."
+fi 
