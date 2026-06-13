@@ -3,7 +3,6 @@
 read -p "Enter project version/name: " input
 trap 'echo "Cancelled! Archiving and cleaning up..."; tar -czf "attendance_tracker_${input}_archive.tar.gz" "attendance_tracker_$input"; rm -rf "attendance_tracker_$input"; exit' SIGINT
 mkdir -p attendance_tracker_$input/Helpers
-sleep 10
 mkdir -p attendance_tracker_$input/reports
 touch attendance_tracker_$input/attendance_checker.py
 touch attendance_tracker_$input/Helpers/assets.csv
