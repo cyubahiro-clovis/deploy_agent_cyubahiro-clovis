@@ -1,7 +1,9 @@
 #!/usr/bin/env bash 
 #This script bootstraps the attendance tracker project
 read -p "Enter project version/name: " input
+trap 'echo "Cancelled! Archiving and cleaning up..."; tar -czf "attendance_tracker_${input}_archive.tar.gz" "attendance_tracker_$input"; rm -rf "attendance_tracker_$input"; exit' SIGINT
 mkdir -p attendance_tracker_$input/Helpers
+sleep 10
 mkdir -p attendance_tracker_$input/reports
 touch attendance_tracker_$input/attendance_checker.py
 touch attendance_tracker_$input/Helpers/assets.csv
@@ -28,3 +30,8 @@ sed -i "s/\"failure\": 50/\"failure\": $failure/" attendance_tracker_$input/Help
 else
 	echo "Failure value is not a number. Keeping default (50)."
 fi 
+if python3 --version; then 
+	echo "python3 is installed."
+else
+	echo "Failed: Python3 is not installed."
+fi
